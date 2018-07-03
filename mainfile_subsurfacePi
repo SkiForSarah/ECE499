@@ -1,0 +1,17 @@
+import subprocess #for running scripts
+import time #for timer
+
+t2=time.time()
+
+subprocess.call("sign_in_to_FTP.py",shell=True)
+
+while(true)
+
+	t1=time.time() #records time in seconds
+	
+	while((t1-time.time())<=10) #collect data every 10 seconds
+		subprocess.call(["IMU.py",shell=True])
+		t1=time.time();
+    
+  subprocess.call(["send.py",shell=True]) #collects file from subsurface Pi    
+
