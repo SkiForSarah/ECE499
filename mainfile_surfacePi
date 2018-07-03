@@ -17,8 +17,6 @@ while(true)
 	while((t1-time.time())<=10) #collect data every 10 seconds
 		subprocess.call(["IMU.py",shell=True])
 		t1=time.time();
-		
-	subprocess.call(["fetch.py",shell=True]) #collects file from subsurface Pi
 	
 	if((time.time())-t2>60)
 		subprocess.call(["send_to_internet.py",shell=True])
