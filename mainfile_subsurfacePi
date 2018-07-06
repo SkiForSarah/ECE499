@@ -13,6 +13,6 @@ while(true)
 		subprocess.call(["IMU.py",shell=True])
 		t1=time.time();
     
-	file = open('data_file_subsurface','rb')                  # file to send
+	file = open('data_file_subsurface','ab')                  # file to send
 	session.storbinary('STOR data_file_subsurface', file)     # send the file
 	file.close()                                    	  # close file and FTP 
