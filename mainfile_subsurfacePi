@@ -2,15 +2,15 @@ import subprocess #for running scripts
 import time #for timer
 import ftplib #for FTP connection
 
-session = ftplib.FTP('198.196.0.11','anonymous','')
+session = ftplib.FTP('192.168.0.11','anonymous','')
 
 while(true)
 
 	t1=time.time() #records time in seconds
 	
-	while((time.time()-t1)<=10) #collect data every 10 seconds
-		subprocess.call(["IMU.py",shell=True])
+	while((time.time()-t1)<=10) #collect data for 10 seconds
+		subprocess.call("python IMU.py",shell=True)
     
-	file = open('data_file_subsurface','rb')                  # file to send
-	session.storbinary('STOR data_file_subsurface', file)     # send the file
-	file.close()                                    	  # close file and FTP 
+	file = open('subsurface_data.csv','rb')                  # file to send
+	session.storbinary('subsurface_data.csv', file)     	 # send the file
+	file.close()                                    	 # close file and FTP 
