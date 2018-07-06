@@ -2,7 +2,6 @@ import subprocess #for running scripts
 import time #for timer
 import ftplib #for FTP connection
 
-t2=time.time()
 session = ftplib.FTP('198.196.0.11','anonymous','')
 
 while(true)
