@@ -1,9 +1,9 @@
 import subprocess #for running scripts
 import time #for timer
+import ftplib #for FTP connection
 
 t2=time.time()
-
-subprocess.call("sign_in_to_FTP.py",shell=True)
+session = ftplib.FTP('198.196.0.11','anonymous','')
 
 while(true)
 
@@ -13,5 +13,6 @@ while(true)
 		subprocess.call(["IMU.py",shell=True])
 		t1=time.time();
     
-  subprocess.call(["send.py",shell=True]) #collects file from subsurface Pi    
-
+	file = open('data_file_subsurface','rb')                  # file to send
+	session.storbinary('STOR data_file_subsurface', file)     # send the file
+	file.close()                                    	  # close file and FTP 
