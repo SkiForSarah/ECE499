@@ -1,25 +1,31 @@
 import subprocess #for running scripts
 import time #for timer
+import ftplib #for FTP connection
 
 send_to_internet=false
+
+
+session = ftplib.FTP('198.196.0.11','anonymous','') #Use online FTP server information
+
 t2=time.time()
-
-subprocess.call("sign_in_to_FTP.py",shell=True)
-
 while(true)
-
-	t1=time.time() #records time in seconds
-		
 	if(send_to_internet=true)
 		t2=time.time()
 		send_to_internet=false
+
+	t1=time.time() #records time in seconds
 	
 	while((t1-time.time())<=10) #collect data every 10 seconds
 		subprocess.call(["IMU.py",shell=True])
 		t1=time.time();
 	
 	if((time.time())-t2>60)
-		subprocess.call(["send_to_internet.py",shell=True])
+		file = open('data_file_subsurface','rb')                  # file to send
+		session.storbinary('STOR data_file_subsurface', file)     # send the file
+		file.close()               				  # close file and FTP
+		file = open('data_file_surface','rb')                  # file to send
+		session.storbinary('STOR data_file_surface', file)     # send the file
+		file.close()                                    	  # close file and FTP 
 		send_to_internet=true
 		
 		
