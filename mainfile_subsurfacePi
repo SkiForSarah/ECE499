@@ -8,9 +8,8 @@ while(true)
 
 	t1=time.time() #records time in seconds
 	
-	while((t1-time.time())<=10) #collect data every 10 seconds
+	while((time.time()-t1)<=10) #collect data every 10 seconds
 		subprocess.call(["IMU.py",shell=True])
-		t1=time.time();
     
 	file = open('data_file_subsurface','rb')                  # file to send
 	session.storbinary('STOR data_file_subsurface', file)     # send the file
