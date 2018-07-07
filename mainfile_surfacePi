@@ -4,10 +4,14 @@ import ftplib #for FTP connection
 
 send_to_internet=false
 
+subprocess.call("sudo /etc/init.d/ntp stop", shell=True)
+subprocess.call("sudo ntpd -q -g", shell=True)
+subprocess.call("sudo /etc/init.d/ntp start", shell=True) #to syncronize time between the Raspberry Pis
 
 session = ftplib.FTP('198.196.0.11','anonymous','') #Use online FTP server information
 
 t2=time.time()
+
 while(true)
 	if(send_to_internet=true)
 		t2=time.time()
