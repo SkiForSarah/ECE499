@@ -38,7 +38,7 @@ while guardian<2:
 		second[k]=Now.second
 		usecond[k]=Now.microsecond
     
-    ###location fetch here###
+    		###location fetch here###
 		
 	###DSP CODE HERE-> BELOW IS A PLACEHOLDER###
 	filtered_pitch=sense_data_pitch
