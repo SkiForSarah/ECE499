@@ -14,6 +14,9 @@ while True:
 	
 	while((time.time()-t1)<=10) #collect data for 10 seconds
 		subprocess.call("python IMU.py",shell=True)
+		
+	####ADD DSP CODE HERE TO FILTER DATA###
+    	####THIS SHOWS POSITION DATA AND THEN COMBINED WITH UTM DATA TO HELP ACCURACY###
     
 	file = open('subsurface_data.csv','rb')                  # file to send
 	session.storbinary('subsurface_data.csv', file)     	 # send the file
