@@ -8,7 +8,7 @@ subprocess.call("sudo /etc/init.d/ntp stop", shell=True)
 subprocess.call("sudo ntpd -q -g", shell=True)
 subprocess.call("sudo /etc/init.d/ntp start", shell=True) #to syncronize time between the Raspberry Pis
 
-while(true)
+while True:
 
 	t1=time.time() #records time in seconds
 	
