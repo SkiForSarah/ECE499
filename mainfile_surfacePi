@@ -9,12 +9,14 @@ send_to_internet=false
 subprocess.call("sudo pon rnet", shell=True) #turns on internet connection
 
 while time.time()-time_now<3:
+	dummy=1
 
 time_now=time.time()
 
 subprocess.call("sudo route add default gw 192.168.254.254",shell=True) #Command to set cell phone internet to default
 
 while time.time()-time_now<3:
+	dummy=1
 
 subprocess.call("sudo /etc/init.d/ntp stop", shell=True)
 subprocess.call("sudo ntpd", shell=True)
@@ -23,7 +25,7 @@ subprocess.call("sudo /etc/init.d/ntp start", shell=True) #to syncronize time be
 session = ftplib.FTP('198.196.0.11','Electroplankton','ece499') #Use online FTP server information
 
 subprocess.call("sudo poff rnet", shell=True) #turns off internet connection
-IMU=subprocess.popen(["python IMU.py &",bufsize=-1,shell=True]) #starts IMU collection in background
+IMU=subprocess.popen(["python IMU.py"],bufsize=-1,shell=True) #starts IMU collection in background
 
 t2=time.time()
 
@@ -35,19 +37,23 @@ while True:
 	t1=time.time() #records time in seconds
 	
 	while((t1-time.time())<=10) #copy data every 10 seconds
-		#every ten seconds: stop, copy, restart, and send copy
-		IMU.kill()
-		subprocess.call(["copyfile('data_file_surface.csv','data_file_surface_copy.csv'),shell=True])
-		IMU
-		t1=time.time();
+		dummy=1
 	
-	if((time.time())-t2>90)
+	#every ten seconds: stop, copy, restart, and send copy
+	IMU.kill()
+	subprocess.call(["copyfile('data_file_surface.csv','data_file_surface_copy.csv'),shell=True])
+	IMU
+	t1=time.time();
+	
+	if((time.time())-t2>60)
 		time_now=time.time()
 		subprocess.call("sudo pon rnet", shell=True) #turns on internet connection
 		while time.time()-time_now<3:
+			dummy=1
 		time_now=time.time()
 		subprocess.call("sudo route add default gw 192.168.254.254",shell=True) #Command to set cell phone internet to default
 		while time.time()-time_now<3:
+			dummy=1
 		file = open('data_file_subsurface_copy','rb')                  # file to send
 		session.storbinary('STOR data_file_subsurface_copy', file)     # send the file
 		file.close()               				  # close file and FTP
