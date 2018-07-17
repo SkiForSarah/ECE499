@@ -1,14 +1,29 @@
 import subprocess #for running scripts
 import time #for timer
 import ftplib #for FTP connection
+from shutil import copyfile
 
+time_now=time.time()
 send_to_internet=false
 
+subprocess.call("sudo pon rnet", shell=True) #turns on internet connection
+
+while time.time()-time_now<3:
+
+time_now=time.time()
+
+subprocess.call("sudo route add default gw 192.168.254.254",shell=True) #Command to set cell phone internet to default
+
+while time.time()-time_now<3:
+
 subprocess.call("sudo /etc/init.d/ntp stop", shell=True)
-subprocess.call("sudo ntpd -q -g", shell=True)
+subprocess.call("sudo ntpd", shell=True)
 subprocess.call("sudo /etc/init.d/ntp start", shell=True) #to syncronize time between the Raspberry Pis
 
-session = ftplib.FTP('198.196.0.11','anonymous','') #Use online FTP server information
+session = ftplib.FTP('198.196.0.11','Electroplankton','ece499') #Use online FTP server information
+
+subprocess.call("sudo poff rnet", shell=True) #turns off internet connection
+IMU=subprocess.popen(["python IMU.py &",bufsize=-1,shell=True]) #starts IMU collection in background
 
 t2=time.time()
 
@@ -19,18 +34,28 @@ while True:
 
 	t1=time.time() #records time in seconds
 	
-	while((t1-time.time())<=10) #collect data every 10 seconds
-		subprocess.call(["IMU.py",shell=True])
+	while((t1-time.time())<=10) #copy data every 10 seconds
+		#every ten seconds: stop, copy, restart, and send copy
+		IMU.kill()
+		subprocess.call(["copyfile('data_file_surface.csv','data_file_surface_copy.csv'),shell=True])
+		IMU
 		t1=time.time();
 	
-	if((time.time())-t2>60)
-		file = open('data_file_subsurface','rb')                  # file to send
-		session.storbinary('STOR data_file_subsurface', file)     # send the file
+	if((time.time())-t2>90)
+		time_now=time.time()
+		subprocess.call("sudo pon rnet", shell=True) #turns on internet connection
+		while time.time()-time_now<3:
+		time_now=time.time()
+		subprocess.call("sudo route add default gw 192.168.254.254",shell=True) #Command to set cell phone internet to default
+		while time.time()-time_now<3:
+		file = open('data_file_subsurface_copy','rb')                  # file to send
+		session.storbinary('STOR data_file_subsurface_copy', file)     # send the file
 		file.close()               				  # close file and FTP
-		file = open('data_file_surface','rb')                  # file to send
-		session.storbinary('STOR data_file_surface', file)     # send the file
+		file = open('data_file_surface_copy','rb')                  # file to send
+		session.storbinary('STOR data_file_surface_copy', file)     # send the file
 		file.close()                                    	  # close file and FTP 
 		send_to_internet=true
+		subprocess.call("sudo poff rnet", shell=True) #turns off internet connection
 		
 		
 	
