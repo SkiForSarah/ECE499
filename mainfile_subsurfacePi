@@ -4,20 +4,29 @@ import ftplib #for FTP connection
 
 session = ftplib.FTP('192.168.0.11','anonymous','')
 
+time_now=time.time()
+while time.time()-time_now<7:
+
 subprocess.call("sudo /etc/init.d/ntp stop", shell=True)
-subprocess.call("sudo ntpd -q -g", shell=True)
+subprocess.call("sudo ntpd", shell=True)
 subprocess.call("sudo /etc/init.d/ntp start", shell=True) #to syncronize time between the Raspberry Pis
+
+IMU=subprocess.popen("python IMU.py &",bufsize=-1,shell=True) #starts IMU collection in background
 
 while True:
 
 	t1=time.time() #records time in seconds
 	
 	while((time.time()-t1)<=10) #collect data for 10 seconds
-		subprocess.call("python IMU.py",shell=True)
+		#every ten seconds: stop, copy, restart, and send copy
+		IMU.kill()
+		subprocess.call(["copyfile('data_file_subsurface.csv','data_file_subsurface_copy.csv'),shell=True])
+		IMU
+		t1=time.time();
 		
 	####ADD DSP CODE HERE TO FILTER DATA###
     	####THIS SHOWS POSITION DATA AND THEN COMBINED WITH UTM DATA TO HELP ACCURACY###
     
-	file = open('subsurface_data.csv','rb')                  # file to send
-	session.storbinary('subsurface_data.csv', file)     	 # send the file
+	file = open('subsubsurface_data_copy.csv','rb')               # file to send
+	session.storbinary('subsubsurface_data_copy.csv', file)     	 # send the file
 	file.close()                                    	 # close file and FTP 
