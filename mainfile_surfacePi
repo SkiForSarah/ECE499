@@ -1,11 +1,11 @@
 import subprocess #for running scripts
 import time #for timer
 import ftplib #for FTP connection
-from shutil import copyfile
 
 time_now=time.time()
 send_to_internet=false
 
+subprocess.call("sudo ln -sf /dev/tty0 /dev/modem", shell=True)
 subprocess.call("sudo pon rnet", shell=True) #turns on internet connection
 
 while time.time()-time_now<3:
@@ -13,6 +13,7 @@ while time.time()-time_now<3:
 
 time_now=time.time()
 
+subprocess.call("sudo ln -sf /dev/tty0 /dev/modem", shell=True)
 subprocess.call("sudo route add default gw 192.168.254.254",shell=True) #Command to set cell phone internet to default
 
 while time.time()-time_now<3:
@@ -41,12 +42,14 @@ while True:
 	
 	#every ten seconds: stop, copy, restart, and send copy
 	IMU.kill()
-	subprocess.call(["copyfile('data_file_surface.csv','data_file_surface_copy.csv'),shell=True])
+	subprocess.call("sudo cp /home/pi/surface_data.csv /home/pi/surface_data_copy.csv",shell=True)
+	subprocess.call("python Handshake_Surface.py",shell=True)
 	IMU
 	t1=time.time();
 	
 	if((time.time())-t2>60)
 		time_now=time.time()
+		subprocess.call("sudo ln -sf /dev/tty0 /dev/modem", shell=True)
 		subprocess.call("sudo pon rnet", shell=True) #turns on internet connection
 		while time.time()-time_now<3:
 			dummy=1
