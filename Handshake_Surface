@@ -1,0 +1,21 @@
+import socket
+
+TCP_IP='192.168.0.10'
+TCP_PORT=5005
+BUFFER_SIZE=1024
+MESSAGE="READY"
+
+while 1:
+  try:
+    s=socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+    s=s.connect((TCP_IP, TCP_PORT))
+    s.send(MESSAGE)
+    data=s.recv(BUFFER_SIZE)
+    s.close()
+    
+   except:
+    continue
+    
+   break
+   
+print(data)   
