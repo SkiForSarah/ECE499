@@ -26,6 +26,8 @@ subprocess.call("sudo /etc/init.d/ntp start", shell=True) #to syncronize time be
 session = ftplib.FTP('198.196.0.11','Electroplankton','ece499') #Use online FTP server information
 
 subprocess.call("sudo poff rnet", shell=True) #turns off internet connection
+
+subprocess.call("python Handshake_Surface.py",shell=True)
 IMU=subprocess.popen(["python IMU.py"],bufsize=-1,shell=True) #starts IMU collection in background
 
 t2=time.time()
