@@ -23,17 +23,17 @@ subprocess.call("sudo /etc/init.d/ntp stop", shell=True)
 subprocess.call("sudo ntpd", shell=True)
 subprocess.call("sudo /etc/init.d/ntp start", shell=True) #to syncronize time between the Raspberry Pis
 
-session = ftplib.FTP('198.196.0.11','Electroplankton','ece499') #Use online FTP server information
+session = ftplib.FTP('198.196.0.10','Electroplankton','ece499') #Use online FTP server information
 
 subprocess.call("sudo poff rnet", shell=True) #turns off internet connection
 
 subprocess.call("python Handshake_Surface.py",shell=True)
-IMU=subprocess.popen(["python IMU.py"],bufsize=-1,shell=True) #starts IMU collection in background
+IMU=subprocess.popen(['python', 'Desktop/IMU.py', '&'],bufsize=-1) #starts IMU collection in background
 
 t2=time.time()
 
 while True:
-	if(send_to_internet=true)
+	if(send_to_internet=true):
 		t2=time.time()
 		send_to_internet=false
 
@@ -51,7 +51,7 @@ while True:
 	
 	if((time.time())-t2>60)
 		time_now=time.time()
-		subprocess.call("sudo ln -sf /dev/tty0 /dev/modem", shell=True)
+		#subprocess.call("sudo ln -sf /dev/tty0 /dev/modem", shell=True)
 		subprocess.call("sudo pon rnet", shell=True) #turns on internet connection
 		while time.time()-time_now<3:
 			dummy=1
@@ -60,10 +60,10 @@ while True:
 		while time.time()-time_now<3:
 			dummy=1
 		file = open('data_file_subsurface_copy','rb')                  # file to send
-		session.storbinary('STOR data_file_subsurface_copy', file)     # send the file
+		session.storbinary('STOR data_file_subsurface_copy.csv', file)     # send the file
 		file.close()               				  # close file and FTP
 		file = open('data_file_surface_copy','rb')                  # file to send
-		session.storbinary('STOR data_file_surface_copy', file)     # send the file
+		session.storbinary('STOR data_file_surface_copy.csv', file)     # send the file
 		file.close()                                    	  # close file and FTP 
 		send_to_internet=true
 		subprocess.call("sudo poff rnet", shell=True) #turns off internet connection
