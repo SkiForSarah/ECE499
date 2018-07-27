@@ -12,7 +12,7 @@ while (time.time()-time_now)<7:
 #subprocess.call("sudo ntpd -g -q", shell=True)
 subprocess.call("sudo /etc/init.d/ntp start", shell=True) #to syncronize time between the Raspberry Pis
 
-subprocess.call("python Handshake_Subsurface.py", shell=True)
+subprocess.call("python Desktop/Handshake_Subsurface.py", shell=True)
 IMU=subprocess.popen(['python' 'Desktop/IMU.py' '&'],bufsize=-1) #starts IMU collection in background
 
 while True:
@@ -25,6 +25,7 @@ while True:
 	#every ten seconds: stop, copy, restart, and send copy
 	IMU.kill()
 	subprocess.call("sudo cp /home/pi/subsurface_data.csv /home/pi/subsurface_data_copy.csv",shell=True)
+	subprocess.call("python Desktop/Handshake_Subsurface.py", shell=True)
 	IMU
 	t1=time.time();
 		
