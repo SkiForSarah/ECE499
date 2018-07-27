@@ -8,12 +8,12 @@ time_now=time.time()
 while (time.time()-time_now)<7:
 	dummy=1
 
-subprocess.call("sudo /etc/init.d/ntp stop", shell=True)
-subprocess.call("sudo ntpd", shell=True)
+#subprocess.call("sudo /etc/init.d/ntp stop", shell=True)
+#subprocess.call("sudo ntpd -g -q", shell=True)
 subprocess.call("sudo /etc/init.d/ntp start", shell=True) #to syncronize time between the Raspberry Pis
 
 subprocess.call("python Handshake_Subsurface.py", shell=True)
-IMU=subprocess.popen("python Desktop/IMU.py &",bufsize=-1,shell=True) #starts IMU collection in background
+IMU=subprocess.popen(['python' 'Desktop/IMU.py' '&'],bufsize=-1) #starts IMU collection in background
 
 while True:
 
@@ -28,9 +28,6 @@ while True:
 	IMU
 	t1=time.time();
 		
-	####ADD DSP CODE HERE TO FILTER DATA###
-    	####THIS SHOWS POSITION DATA AND THEN COMBINED WITH UTM DATA TO HELP ACCURACY###
-    
 	file = open('subsurface_data_copy.csv','rb')               # file to send
 	session.storbinary(STOR 'subsurface_data_copy.csv', file)     	 # send the file
 	file.close()                                    	 # close file and FTP 
