@@ -27,7 +27,7 @@ session = ftplib.FTP('198.196.0.10','Electroplankton','ece499') #Use online FTP 
 
 subprocess.call("sudo poff rnet", shell=True) #turns off internet connection
 
-subprocess.call("python Handshake_Surface.py",shell=True)
+subprocess.call("python Desktop/Handshake_Surface.py",shell=True)
 IMU=subprocess.popen(['python', 'Desktop/IMU.py', '&'],bufsize=-1) #starts IMU collection in background
 
 t2=time.time()
@@ -39,7 +39,7 @@ while True:
 
 	t1=time.time() #records time in seconds
 	
-	while((t1-time.time())<=10) #copy data every 10 seconds
+	while((t1-time.time())<=10): #copy data every 10 seconds
 		dummy=1
 	
 	#every ten seconds: stop, copy, restart, and send copy
@@ -49,7 +49,7 @@ while True:
 	IMU
 	t1=time.time();
 	
-	if((time.time())-t2>60)
+	if((time.time())-t2>60):
 		time_now=time.time()
 		#subprocess.call("sudo ln -sf /dev/tty0 /dev/modem", shell=True)
 		subprocess.call("sudo pon rnet", shell=True) #turns on internet connection
