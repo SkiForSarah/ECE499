@@ -8,7 +8,7 @@ MESSAGE="READY"
 while 1:
   try:
     s=socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-    s=s.connect((TCP_IP, TCP_PORT))
+    s.connect((TCP_IP, TCP_PORT))
     s.send(MESSAGE)
     data=s.recv(BUFFER_SIZE)
     s.close()
